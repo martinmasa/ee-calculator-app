@@ -17,6 +17,7 @@
     "lint": "eslint --ext .js,.jsx,.es6 ./src/"
   },
   "dependencies": {
+    "mathjs": "^5.4.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",

@@ -35,13 +35,26 @@ export class CalculatorButton extends Component {
   static propTypes = {
     label: PropTypes.string,
     name: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
     operator: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
 
+  clickHandler = () => {
+    const { onClick, value } = this.props;
+    onClick(value);
+  };
+
   render() {
     const { name, value, label, operator } = this.props;
-    let props = { name, value, label, className: `btn-${name}` };
+    let props = {
+      className: `btn-${name}`,
+      type: 'button',
+      onClick: this.clickHandler,
+      name,
+      value,
+      label
+    };
     props = operator ? { ...props, operator: 'true' } : props;
 
     return (

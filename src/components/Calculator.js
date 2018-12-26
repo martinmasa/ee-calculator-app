@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import math from 'mathjs';
 import styled from 'styled-components';
 
 import CalculatorButton from './CalculatorButton';
@@ -41,37 +42,80 @@ export const calculatorButtons = {
   ],
   operator: [
     { name: 'add', value: '+', label: '[+]', operator: true },
-    { name: 'subtract', value: '+', label: '[−]', operator: true },
-    { name: 'multiply', value: '+', label: '[×]', operator: true },
-    { name: 'divide', value: '+', label: '[÷]', operator: true }
+    { name: 'subtract', value: '-', label: '[−]', operator: true },
+    { name: 'multiply', value: '*', label: '[×]', operator: true },
+    { name: 'divide', value: '/', label: '[÷]', operator: true }
   ]
 };
 
+const operators = ['+', '-', '*', '/'];
+
 export class Calculator extends Component {
   state = {
-    result: ''
+    result: '',
+    calculation: [],
+    lastValue: ''
+  };
+
+  appendValue = (value) => {
+    const { calculation, lastValue } = this.state;
+    const newCalculation = calculation;
+
+    if (!lastValue && operators.includes(value)) {
+      return;
+    }
+
+    if (operators.includes(lastValue) && operators.includes(value)) {
+      newCalculation.pop();
+    }
+
+    newCalculation.push(value);
+
+    this.setState({
+      calculation: newCalculation,
+      lastValue: value
+    });
+  };
+
+  reset = () => {
+    this.setState({
+      result: '',
+      calculation: [],
+      lastValue: ''
+    });
+  };
+
+  evaluate = () => {
+    const { calculation } = this.state;
+
+    this.setState({
+      result: math.eval(calculation.join('')),
+      calculation: [],
+      lastValue: ''
+    });
   };
 
   render() {
-    const { result } = this.state;
+    const { result, calculation } = this.state;
     const buttons = [...calculatorButtons.numeric, ...calculatorButtons.operator];
 
     return (
       <Container>
-        <Display data-testid="calculator-display">{result || 0}</Display>
+        <Display data-testid="calculator-display">{calculation.join('') || result || 0}</Display>
 
         {buttons.map(({ name, value, label, operator }) => (
           <CalculatorButton
             key={`btn-${name}`}
             name={name}
-            value={value}
             label={label}
+            value={value}
             operator={operator}
+            onClick={this.appendValue}
           />
         ))}
 
-        <CalculatorButton operator name="clear" label="C" />
-        <CalculatorButton operator name="evaluate" label="[=]" />
+        <CalculatorButton operator name="clear" label="C" onClick={this.reset} />
+        <CalculatorButton operator name="evaluate" label="[=]" onClick={this.evaluate} />
       </Container>
     );
   }

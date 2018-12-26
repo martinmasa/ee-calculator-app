@@ -1,11 +1,12 @@
 import React from 'react';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup, fireEvent } from 'react-testing-library';
 
 import CalculatorButton from '../CalculatorButton';
 
 const defaultProps = {
   name: 'five',
-  value: '5'
+  value: '5',
+  onClick: jest.fn()
 };
 
 describe('<CalculatorButton />', () => {
@@ -18,8 +19,15 @@ describe('<CalculatorButton />', () => {
   });
 
   test('should display value when label not provided', () => {
-    const props = { ...defaultProps };
-    const { queryByTestId } = render(<CalculatorButton {...props} />);
-    expect(queryByTestId(`btn-${props.name}`).textContent).toBe(`${props.value}`);
+    const { queryByTestId } = render(<CalculatorButton {...defaultProps} />);
+    expect(queryByTestId(`btn-${defaultProps.name}`).textContent).toBe(`${defaultProps.value}`);
+  });
+
+  test('should handle click event', () => {
+    const { queryByTestId } = render(<CalculatorButton {...defaultProps} />);
+
+    fireEvent.click(queryByTestId(`btn-${defaultProps.name}`));
+    expect(defaultProps.onClick).toHaveBeenCalledTimes(1);
+    expect(defaultProps.onClick).toHaveBeenCalledWith(`${defaultProps.value}`);
   });
 });
