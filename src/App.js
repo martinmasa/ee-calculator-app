@@ -4,11 +4,14 @@ import 'typeface-lato';
 
 import eeLogo from './assets/ee-logo-white.svg';
 
+import Calculator from './components/Calculator';
+
 const eeTheme = {
   blue: '#1795D4',
   darkblue: '#196B98',
   pink: '#E7087C',
   darkgrey: '#373D45',
+  lightgrey: '#F5F5F5',
   dark: '#333333'
 };
 
@@ -62,6 +65,7 @@ class App extends Component {
 
           <Main>
             <h1 data-testid="app-heading">Calculator</h1>
+            <Calculator />
           </Main>
         </>
       </ThemeProvider>
