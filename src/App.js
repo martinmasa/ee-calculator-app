@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import 'typeface-lato';
 
+import eeLogo from './assets/ee-logo-white.svg';
+
 const eeTheme = {
   blue: '#1795D4',
   darkblue: '#196B98',
@@ -31,6 +33,16 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Header = styled.header`
+  background-color: ${({ theme }) => theme.blue};
+  height: 8rem;
+  padding: 2rem;
+
+  img {
+    height: 100%;
+  }
+`;
+
 const Main = styled.main`
   display: grid;
   justify-items: center;
@@ -42,6 +54,12 @@ class App extends Component {
       <ThemeProvider theme={eeTheme}>
         <>
           <GlobalStyle />
+          <Header data-testid="app-header">
+            <a href="https://www.equalexperts.com/">
+              <img src={eeLogo} alt="Equal Experts logo" />
+            </a>
+          </Header>
+
           <Main>
             <h1 data-testid="app-heading">Calculator</h1>
           </Main>
